@@ -6,7 +6,10 @@ function App() {
   return (
     <DevOpsContextProvider>
       <div className="app">
-        <header className="app-header">DevOps Pipelines Panel</header>
+        <header className="app-header">
+          <h1>DevOps Pipelines Panel</h1>
+        </header>
+
         <EnvironmentsList />
       </div>
     </DevOpsContextProvider>

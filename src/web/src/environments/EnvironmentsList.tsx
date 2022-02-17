@@ -6,12 +6,11 @@ import { useEnvironmentsList } from './useEnvironmentsList';
 
 export const EnvironmentsList: FC<{}> = () => {
   const { environmentsState: { environments } } = useDevOpsContext();
-  const { fetchEnvironments, nextEnvironments, fetchAllEnvironments } = useEnvironmentsList();
+  const { nextEnvironments, fetchAllEnvironments } = useEnvironmentsList();
   const { fetchAllDeployments } = useDeploymentsList();
 
   return (
     <div className="app-environments">
-      <button type="button" onClick={() => fetchEnvironments()}>Get environments</button>
       <button type="button" onClick={() => fetchAllEnvironments()}>Get all environments</button>
       <button type="button" onClick={() => fetchAllDeployments()}>Get all deployments</button>
 
