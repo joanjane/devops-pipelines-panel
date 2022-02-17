@@ -1,16 +1,18 @@
 import { FC, createContext, useContext, useState, useCallback } from 'react';
-import { DevOpsAccount, DevOpsEnvironmentList } from '../api/types';
+import { DevOpsAccount, DevOpsEnvironmentList, DevOpsPagedList } from '../api/types';
 
 interface IDevOpsContext {
   devOpsAccount: DevOpsAccount;
   environmentsState: useEnvironmentsStateResult;
   deploymentsState: useDeploymentsStateResult;
+  pipelinesState: usePipelinesStateResult;
 }
 
 const initialContext: IDevOpsContext = {
   devOpsAccount: null,
   environmentsState: { environments: { count: 0, value: [], page: -1 }, setEnvironments: null },
-  deploymentsState: { deployments: { }, addDeployment: null, clearDeployments: null }
+  deploymentsState: { deployments: {}, addDeployment: null, clearDeployments: null },
+  pipelinesState: { pipelines: { count: 0, value: [], page: -1 }, addPipelines: null, clearPipelines: null },
 };
 
 const DevOpsContext = createContext<IDevOpsContext>(initialContext);
@@ -24,11 +26,13 @@ export const DevOpsContextProvider: FC = ({ children }) => {
 
   const environmentsState = useEnvironmentsState();
   const deploymentsState = useDeploymentsState();
+  const pipelinesState = usePipelinesState();
   return (
     <DevOpsContext.Provider value={{
       devOpsAccount,
       environmentsState,
-      deploymentsState
+      deploymentsState,
+      pipelinesState
     }}>
       {children}
     </DevOpsContext.Provider>
@@ -50,13 +54,15 @@ const useEnvironmentsState = (): useEnvironmentsStateResult => {
   };
 };
 
-// Dictionary where key is environmentId
+// Dictionary where key is pipelineId
 type Deployment = {
   id: number;
   name: string;
   environmentId: number;
   stageName: string;
-  result: 'succeeded' | 'failed';
+  result: 'succeeded' | 'failed' | 'inprogress';
+  pipelineId: number;
+  pipelineName: string;
   pipelineUrl: string;
   buildId: number;
   buildName: string;
@@ -64,18 +70,18 @@ type Deployment = {
 type Deployments = Record<number, Deployment[]>;
 type useDeploymentsStateResult = {
   deployments: Deployments;
-  addDeployment: (environmentId: number, deployment: Deployment) => void;
+  addDeployment: (deployment: Deployment) => void;
   clearDeployments: () => void;
 };
 const useDeploymentsState = (): useDeploymentsStateResult => {
   const [deployments, setDeployments] = useState<Deployments>({});
 
-  const addDeployment = useCallback(async (environmentId: number, deployment: Deployment) => {
+  const addDeployment = useCallback(async (deployment: Deployment) => {
     setDeployments(prev => {
-      const envDeploys = prev[environmentId] || [];
+      const envDeploys = prev[deployment.pipelineId] || [];
       return {
         ...prev,
-        [environmentId]: [...envDeploys, deployment]
+        [deployment.pipelineId]: [...envDeploys, deployment]
       };
     });
   }, [setDeployments]);
@@ -88,5 +94,39 @@ const useDeploymentsState = (): useDeploymentsStateResult => {
     deployments,
     addDeployment,
     clearDeployments
+  };
+};
+
+type Pipeline = {
+  id: number;
+  name: string;
+  pipelineUrl: string;
+  folder: string;
+};
+type usePipelinesStateResult = {
+  pipelines: DevOpsPagedList<Pipeline>;
+  addPipelines: (deployment: DevOpsPagedList<Pipeline>) => void;
+  clearPipelines: () => void;
+};
+const usePipelinesState = (): usePipelinesStateResult => {
+  const [pipelines, setPipelines] = useState<DevOpsPagedList<Pipeline>>({ value: [], count: 0, page: -1 });
+
+  const addPipelines = useCallback(async (pipelines: DevOpsPagedList<Pipeline>) => {
+    setPipelines(prev => {
+      return {
+        ...pipelines,
+        value: [...prev.value, ...pipelines.value]
+      };
+    });
+  }, [setPipelines]);
+
+  const clearPipelines = useCallback(() => {
+    setPipelines({ value: [], count: 0, page: -1 });
+  }, [setPipelines]);
+
+  return {
+    pipelines,
+    addPipelines,
+    clearPipelines
   };
 };

@@ -47,3 +47,15 @@ export interface DevOpsEnvironmentDeployment {
   startTime: string;
   finishTime: string;
 }
+
+export interface DevOpsPipelineList extends DevOpsPagedList<DevOpsPipeline> { }
+export interface DevOpsPipeline {
+  id: number;
+  name: string;
+  folder: string;
+  _links: {
+    web: {
+      href: string;
+    };
+  };
+}

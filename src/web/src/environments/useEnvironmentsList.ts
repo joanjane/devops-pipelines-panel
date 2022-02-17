@@ -50,7 +50,6 @@ export const useEnvironmentsList = (): useEnvironmentsListResult => {
 };
 
 function filterEnvironments(envsResult: DevOpsEnvironmentList) {
-  console.log(envWhiteList);
   if (envWhiteList.length > 0) {
     envsResult.value = envsResult.value.filter(e => envWhiteList.includes(e.name));
   }

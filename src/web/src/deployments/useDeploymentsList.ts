@@ -16,13 +16,16 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
     const deployment = await devOpsApiClient.getEnvironmentDeployments(devOpsAccount, environmentId, null, 1);
     if (deployment.value[0]) {
       const deploy = deployment.value[0];
-      addDeployment(environmentId, {
+
+      addDeployment({
         id: deploy.id,
         name: deploy.name,
         stageName: deploy.stageName,
         environmentId: deploy.environmentId,
         result: deploy.result,
         pipelineUrl: deploy.owner._links.web.href,
+        pipelineId: deploy.definition.id,
+        pipelineName: deploy.definition.name,
         buildId: deploy.owner.id,
         buildName: deploy.owner.name,
       });

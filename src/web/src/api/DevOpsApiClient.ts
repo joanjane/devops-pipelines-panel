@@ -2,7 +2,8 @@ import { serializeQueryParams } from './utils';
 import {
   DevOpsAccount,
   DevOpsEnvironmentDeploymentList,
-  DevOpsEnvironmentList
+  DevOpsEnvironmentList,
+  DevOpsPipelineList
 } from './types';
 
 export class DevOpsApiClient {
@@ -50,6 +51,24 @@ export class DevOpsApiClient {
     }
   }
 
+  public async getPipelines(devOpsAccount: DevOpsAccount, continuationToken?: string, top?: number): Promise<DevOpsPipelineList> {
+    const query = serializeQueryParams({
+      continuationToken,
+      '$top': top
+    });
+
+    const url = `${this.baseUrl(devOpsAccount)}/pipelines?api-version=7.1-preview.1&${query}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: this.buildDefaultHeaders(devOpsAccount)
+    });
+
+    const data = await response.json();
+    return {
+      ...data,
+      continuationToken: response.headers.get('x-ms-continuationtoken')
+    }
+  }
 
   private buildDefaultHeaders(devOpsAccount: DevOpsAccount): HeadersInit {
     return {
