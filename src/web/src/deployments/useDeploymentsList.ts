@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
 
+const batchSize = 5;
+
 type useDeploymentsListResult = {
   fetchAllDeployments: () => Promise<void>;
 };
@@ -28,23 +30,26 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
         pipelineName: deploy.definition.name,
         buildId: deploy.owner.id,
         buildName: deploy.owner.name,
+        startTime: deploy.startTime
       });
     }
   }, [devOpsAccount, addDeployment]);
 
   const fetchAllDeployments = useCallback(async () => {
-    if (environments.page > 0 && !environments.continuationToken) {
+    const environmentsLoaded = environments.continuationToken === null;
+    if (environmentsLoaded) {
       clearDeployments();
-      let batchIndex = 0;
-      let batchSize = 5;
       let batch;
+      let batchIndex = 0;
       do {
         batch = paginate(environments.value, batchIndex, batchSize);
         await Promise.all(batch.map(b => getLastDeployment(b.id)));
         batchIndex++;
       } while(batch.length > 0);
+    } else {
+      console.log('Skip loading deployments as environments are not synced yet');
     }
-  }, [environments.page, environments.continuationToken, environments.value, clearDeployments, getLastDeployment]);
+  }, [environments.continuationToken, environments.value, clearDeployments, getLastDeployment]);
 
   return {
     fetchAllDeployments

@@ -1,6 +1,9 @@
 import { useCallback } from 'react';
 import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
+import { Pipeline } from '../core/hooks/usePipelinesState';
+
+const foldersWhitelist = (process.env.REACT_APP_PIPELINES_FOLDERS_WHITELIST || '').split(',').filter(s => s !== '');
 
 const pageSize = 50;
 type usePipelineListResult = {
@@ -9,35 +12,41 @@ type usePipelineListResult = {
 export const usePipelineList = (): usePipelineListResult => {
   const {
     devOpsAccount,
-    pipelinesState: { pipelines, addPipelines, clearPipelines }
+    pipelinesState: { addPipelines, clearPipelines }
   } = useDevOpsContext();
 
-  const getPipelines = useCallback(async (continuationToken?: string) => {
-    const pipelinesResponse = await devOpsApiClient.getPipelines(devOpsAccount, continuationToken, pageSize);
+  const getPipelines = useCallback(async (continuationToken: string | false) => {
+    const nextToken = continuationToken === false ? null : continuationToken;
+    const pipelinesResponse = await devOpsApiClient.getPipelines(devOpsAccount, nextToken, pageSize);
+
     addPipelines({
       ...pipelinesResponse,
-      value: pipelinesResponse.value.map(p => ({
+      value: filterPipelines(pipelinesResponse.value.map(p => ({
         id: p.id,
         name: p.name,
         folder: p.folder,
         pipelineUrl: p._links.web.href,
-      }))
+      })))
     });
     return pipelinesResponse.continuationToken;
   }, [devOpsAccount, addPipelines]);
 
   const fetchAllPipelines = useCallback(async () => {
     clearPipelines();
-    let nextToken = pipelines.continuationToken;
-    if (pipelines.page < 0) {
-      nextToken = await getPipelines();
-    }
+    let nextToken = await getPipelines(false);
     while (nextToken) {
       nextToken = await getPipelines(nextToken);
     }
-  }, [pipelines.page, pipelines.continuationToken, clearPipelines, getPipelines]);
+  }, [clearPipelines, getPipelines]);
 
   return {
     fetchAllPipelines
   };
 };
+
+
+function filterPipelines(pipelines: Pipeline[]): Pipeline[] {
+  if (foldersWhitelist.length > 0) {
+    return pipelines.filter(e => foldersWhitelist.includes(e.folder));
+  }
+}

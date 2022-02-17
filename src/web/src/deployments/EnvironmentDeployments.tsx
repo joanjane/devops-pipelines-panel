@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { PipelineResult } from '../api/types';
 import { useDevOpsContext } from '../core/DevOpsContext';
 
 type EnvironmentsListProps = {
@@ -17,13 +18,11 @@ export const EnvironmentDeployments: FC<EnvironmentsListProps> = ({ pipelineId }
   );
 };
 
-export const EnvironmentDeploymentStatusIcon: FC<{result: 'succeeded' | 'failed' | 'inprogress'}> = ({ result }) => {
+export const EnvironmentDeploymentStatusIcon: FC<{ result: PipelineResult }> = ({ result }) => {
   if (result === 'succeeded') {
     return <>✅</>;
   } else if (result === 'failed') {
     return <>❌</>;
-  } else if (result === 'inprogress') {
-    return <>🔄</>;
   } else {
     return <>{result}</>;
   }

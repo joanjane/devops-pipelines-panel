@@ -6,11 +6,9 @@ export interface DevOpsAccount {
 
 export interface DevOpsPagedList<T> {
   count: number;
-  continuationToken?: string;
+  continuationToken: string | false;
   value: T[];
-  page: number;
 }
-
 
 export interface DevOpsEnvironmentList extends DevOpsPagedList<DevOpsEnvironment> { }
 export interface DevOpsEnvironment {
@@ -19,6 +17,7 @@ export interface DevOpsEnvironment {
 }
 
 export interface DevOpsEnvironmentDeploymentList extends DevOpsPagedList<DevOpsEnvironmentDeployment> { }
+export type PipelineResult = 'abandoned' | 'canceled' | 'failed' | 'skipped' | 'succeeded' | 'succeededWithIssue'
 export interface DevOpsEnvironmentDeployment {
   id: number;
   name: string;
@@ -42,7 +41,7 @@ export interface DevOpsEnvironmentDeployment {
       };
     };
   };
-  result: 'succeeded' | 'failed';
+  result: PipelineResult;
   queueTime: string;
   startTime: string;
   finishTime: string;

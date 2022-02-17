@@ -3,48 +3,34 @@ import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { DevOpsEnvironmentList } from '../api/types';
 import { useDevOpsContext } from '../core/DevOpsContext';
 
-const envWhiteList = (process.env.REACT_APP_ENV_WHITELIST || '').split(',');
+const envWhiteList = (process.env.REACT_APP_ENV_WHITELIST || '').split(',').filter(s => s !== '');
 
 const pageSize = 50;
 type useEnvironmentsListResult = {
-  fetchEnvironments: () => Promise<string>;
-  nextEnvironments: () => Promise<string>;
+  fetchEnvironments: (continuationToken: string | false) => Promise<string | false>;
   fetchAllEnvironments: () => Promise<void>;
 };
 export const useEnvironmentsList = (): useEnvironmentsListResult => {
-  const { devOpsAccount, environmentsState: { environments, setEnvironments } } = useDevOpsContext();
+  const { devOpsAccount, environmentsState: { addEnvironments, clearEnvironments } } = useDevOpsContext();
 
-  const fetchEnvironments = useCallback(async () => {
-    const envsResult = await devOpsApiClient.getEnvironments(devOpsAccount, null, pageSize);
+  const fetchEnvironments = useCallback(async (continuationToken: string | false) => {
+    const nextToken = continuationToken === false ? null : continuationToken;
+    const envsResult = await devOpsApiClient.getEnvironments(devOpsAccount, nextToken, pageSize);
     filterEnvironments(envsResult);
-    setEnvironments({ ...envsResult, page: 0 });
-
+    addEnvironments(envsResult);
     return envsResult.continuationToken;
-  }, [devOpsAccount, setEnvironments]);
-
-  const nextEnvironments = useCallback(async (continuationToken?: string) => {
-    continuationToken = continuationToken ?? environments.continuationToken
-    const envsResult = await devOpsApiClient.getEnvironments(devOpsAccount, continuationToken, pageSize);
-    filterEnvironments(envsResult);
-
-    setEnvironments(prev => ({ ...envsResult, value: [...prev.value, ...envsResult.value], page: prev.page + 1 }));
-
-    return envsResult.continuationToken;
-  }, [devOpsAccount, setEnvironments, environments.continuationToken]);
+  }, [devOpsAccount, addEnvironments]);
 
   const fetchAllEnvironments = useCallback(async () => {
-    let nextToken = environments.continuationToken;
-    if (environments.page < 0) {
-      nextToken = await fetchEnvironments();
-    }
+    clearEnvironments();
+    let nextToken = await fetchEnvironments(false);
     while (nextToken) {
-      nextToken = await nextEnvironments(nextToken);
+      nextToken = await fetchEnvironments(nextToken);
     }
-  }, [fetchEnvironments, nextEnvironments, environments.page, environments.continuationToken]);
+  }, [clearEnvironments, fetchEnvironments]);
 
   return {
     fetchEnvironments,
-    nextEnvironments,
     fetchAllEnvironments
   };
 };
