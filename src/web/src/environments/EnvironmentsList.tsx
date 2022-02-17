@@ -1,3 +1,5 @@
+import './EnvironmentsList.css';
+
 import { FC } from 'react';
 import { useDevOpsContext } from '../core/DevOpsContext';
 import { EnvironmentDeployments } from '../deployments/EnvironmentDeployments';
@@ -11,10 +13,12 @@ export const EnvironmentsList: FC<{}> = () => {
 
   return (
     <div className="app-environments">
-      <button type="button" onClick={() => fetchAllEnvironments()}>Get all environments</button>
-      <button type="button" onClick={() => fetchAllDeployments()}>Get all deployments</button>
+      <div className="app-environments__actions">
+        <button type="button" onClick={() => fetchAllEnvironments()}>Get all environments</button>
+        <button type="button" onClick={() => fetchAllDeployments()}>Get all deployments</button>
+      </div>
 
-      {environments.value.map(e => <div key={e.id}>
+      {environments.value.map(e => <div className="app-environments__item" key={e.id}>
         <strong>{e.name}</strong>
         <EnvironmentDeployments environmentId={e.id} />
       </div>)}
