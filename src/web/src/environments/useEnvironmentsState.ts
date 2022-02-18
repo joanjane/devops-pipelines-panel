@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import { DevOpsEnvironmentList } from '../../api/types';
+import { DevOpsEnvironmentList } from '../api/types';
 
-const initialState: DevOpsEnvironmentList = { count: 0, value: [], continuationToken: false };
+export const initialState: DevOpsEnvironmentList = { count: 0, value: [], continuationToken: false };
 export type useEnvironmentsStateResult = {
   environments: DevOpsEnvironmentList;
   addEnvironments: (environments: DevOpsEnvironmentList) => void;

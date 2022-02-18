@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
-import { Pipeline } from '../core/hooks/usePipelinesState';
+import { Pipeline } from './usePipelinesState';
 
 const foldersWhitelist = (process.env.REACT_APP_PIPELINES_FOLDERS_WHITELIST || '').split(',').filter(s => s !== '');
 

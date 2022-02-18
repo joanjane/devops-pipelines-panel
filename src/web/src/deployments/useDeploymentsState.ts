@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { PipelineResult } from '../../api/types';
+import { PipelineResult } from '../api/types';
 
 export type Deployment = {
   id: number;
@@ -18,8 +18,7 @@ export type Deployment = {
 // Dictionary where key is pipelineId
 export type Deployments = Record<number, Deployment[]>;
 
-const initialState: Deployments = {};
-
+export const initialState: Deployments = {};
 export type useDeploymentsStateResult = {
   deployments: Deployments;
   addDeployment: (deployment: Deployment) => void;

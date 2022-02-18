@@ -1,8 +1,20 @@
 import { FC, createContext, useContext, useState } from 'react';
 import { DevOpsAccount } from '../api/types';
-import { useDeploymentsState, useDeploymentsStateResult } from './hooks/useDeploymentsState';
-import { useEnvironmentsState, useEnvironmentsStateResult } from './hooks/useEnvironmentsState';
-import { usePipelinesState, usePipelinesStateResult } from './hooks/usePipelinesState';
+import {
+  useDeploymentsState,
+  useDeploymentsStateResult,
+  initialState as deploymentsInitialState
+} from '../deployments/useDeploymentsState';
+import {
+  useEnvironmentsState,
+  useEnvironmentsStateResult,
+  initialState as environmentsInitialState
+} from '../environments/useEnvironmentsState';
+import {
+  usePipelinesState,
+  usePipelinesStateResult,
+  initialState as pipelinesInitialState
+} from '../pipelines/usePipelinesState';
 
 interface IDevOpsContext {
   devOpsAccount: DevOpsAccount;
@@ -11,13 +23,14 @@ interface IDevOpsContext {
   pipelinesState: usePipelinesStateResult;
 }
 
+const stub = () => { };
+
 const initialContext: IDevOpsContext = {
   devOpsAccount: null,
-  pipelinesState: { pipelines: { count: 0, value: [], continuationToken: false }, addPipelines: null, clearPipelines: null },
-  environmentsState: { environments: { count: 0, value: [], continuationToken: false }, addEnvironments: null, clearEnvironments: null },
-  deploymentsState: { deployments: {}, addDeployment: null, clearDeployments: null },
+  pipelinesState: { pipelines: pipelinesInitialState, addPipelines: stub, clearPipelines: stub },
+  environmentsState: { environments: environmentsInitialState, addEnvironments: stub, clearEnvironments: stub },
+  deploymentsState: { deployments: deploymentsInitialState, addDeployment: stub, clearDeployments: stub },
 };
-
 const DevOpsContext = createContext<IDevOpsContext>(initialContext);
 
 export const DevOpsContextProvider: FC = ({ children }) => {

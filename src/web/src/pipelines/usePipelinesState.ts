@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { DevOpsPagedList } from '../../api/types';
+import { DevOpsPagedList } from '../api/types';
 
 export type Pipeline = {
   id: number;
@@ -8,7 +8,7 @@ export type Pipeline = {
   folder: string;
 };
 
-const initialState: DevOpsPagedList<Pipeline> = { value: [], count: 0, continuationToken: false};
+export const initialState: DevOpsPagedList<Pipeline> = { value: [], count: 0, continuationToken: false};
 export type usePipelinesStateResult = {
   pipelines: DevOpsPagedList<Pipeline>;
   addPipelines: (deployment: DevOpsPagedList<Pipeline>) => void;
