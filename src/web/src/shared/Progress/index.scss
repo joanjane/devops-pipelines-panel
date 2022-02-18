@@ -1,0 +1,24 @@
+.app-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+
+  &__fill {
+    height: 10px;
+    width: 0;
+
+    animation-name: progress;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+  }
+}
+
+@keyframes progress {
+  0%    { background: #2a23a5; }
+  25%   { background: #3030c5; }
+  75%   { background: #00d4ff; }
+  100%  { background: #2a23a5; }
+}

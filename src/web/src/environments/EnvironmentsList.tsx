@@ -1,4 +1,4 @@
-import './EnvironmentsList.css';
+import './EnvironmentsList.scss';
 
 import { FC } from 'react';
 import { useDevOpsContext } from '../core/DevOpsContext';

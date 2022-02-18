@@ -1,4 +1,4 @@
-import './index.css';
+import './index.scss';
 
 import { FC } from 'react';
 import { usePipelineList } from '../../pipelines/usePipelineList';

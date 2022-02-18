@@ -32,9 +32,14 @@ export const useDeploymentsState = (): useDeploymentsStateResult => {
       const envDeploys = prev[deployment.pipelineId] || [];
       return {
         ...prev,
-        [deployment.pipelineId]: [...envDeploys, deployment].sort(sortDeployments).map((a, i, list) => {
-          return {...a, pendingDeployments: i !== 0 && list[i - 1].buildName !== a.buildName}
-        })
+        [deployment.pipelineId]: [...envDeploys, deployment]
+          .sort(sortDeployments)
+          .map((env, i, list) => {
+            return {
+              ...env,
+              pendingDeployments: i !== 0 && list.some(prevEnv => prevEnv.buildName !== env.buildName)
+            };
+          })
       };
     });
   }, [setDeployments]);

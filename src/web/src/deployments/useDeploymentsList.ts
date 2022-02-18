@@ -1,6 +1,8 @@
+/* eslint-disable no-loop-func */
 import { useCallback } from 'react';
 import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
+import { useProgress } from '../shared/Progress';
 
 const batchSize = 5;
 
@@ -13,6 +15,7 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
     environmentsState: { environments },
     deploymentsState: { addDeployment, clearDeployments }
   } = useDevOpsContext();
+  const { trackPendingTasks, resolveProgressTask } = useProgress();
 
   const getLastDeployment = useCallback(async (environmentId: number) => {
     const deployment = await devOpsApiClient.getEnvironmentDeployments(devOpsAccount, environmentId, null, 1);
@@ -40,17 +43,20 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
     const environmentsLoaded = environments.continuationToken === null;
     if (environmentsLoaded) {
       clearDeployments();
+      trackPendingTasks(true, environments.value.length);
       let batch;
       let batchIndex = 0;
       do {
         batch = paginate(environments.value, batchIndex, batchSize);
-        await Promise.all(batch.map(b => getLastDeployment(b.id)));
+        await Promise.all(batch.map(b => getLastDeployment(b.id).finally(() => {
+          resolveProgressTask();
+        })));
         batchIndex++;
-      } while(batch.length > 0);
+      } while (batch.length > 0);
     } else {
       console.log('Skip loading deployments as environments are not synced yet');
     }
-  }, [environments.continuationToken, environments.value, clearDeployments, getLastDeployment]);
+  }, [environments.continuationToken, environments.value, clearDeployments, trackPendingTasks, getLastDeployment, resolveProgressTask]);
 
   return {
     fetchAllDeployments

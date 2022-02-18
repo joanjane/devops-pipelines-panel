@@ -1,0 +1,46 @@
+.app-pipelines {
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f6f6f6;
+    box-shadow: 0 3px 7px -4px #00000052;
+    overflow-x: auto;
+
+    @media screen and (min-width: 768px) {
+      align-items: center;
+      flex-direction: row;
+    }
+
+    &:hover {
+      box-shadow: 0 3px 12px -4px #00000052;
+    }
+  }
+
+  &__name {
+    padding: 0 0 1rem 0;
+    font-weight: bold;
+    max-width: 18.75rem;
+    min-width: 18.75rem;
+    word-break: break-all;
+
+    @media screen and (min-width: 768px) {
+      padding: 0 1rem 0 0;
+    }
+  }
+}
+
+.app-pipeline-link,
+.app-pipeline-link:hover,
+.app-pipeline-link:visited,
+.app-pipeline-link:active {
+  color: black;
+  text-decoration: none;
+}
+
+.app-pipeline-link:hover {
+  text-decoration: underline;
+}

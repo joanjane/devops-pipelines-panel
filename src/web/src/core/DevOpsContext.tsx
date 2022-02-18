@@ -27,9 +27,21 @@ const stub = () => { };
 
 const initialContext: IDevOpsContext = {
   devOpsAccount: null,
-  pipelinesState: { pipelines: pipelinesInitialState, addPipelines: stub, clearPipelines: stub },
-  environmentsState: { environments: environmentsInitialState, addEnvironments: stub, clearEnvironments: stub },
-  deploymentsState: { deployments: deploymentsInitialState, addDeployment: stub, clearDeployments: stub },
+  pipelinesState: {
+    pipelines: pipelinesInitialState,
+    addPipelines: stub,
+    clearPipelines: stub
+  },
+  environmentsState: {
+    environments: environmentsInitialState,
+    addEnvironments: stub,
+    clearEnvironments: stub
+  },
+  deploymentsState: {
+    deployments: deploymentsInitialState,
+    addDeployment: stub,
+    clearDeployments: stub
+  },
 };
 const DevOpsContext = createContext<IDevOpsContext>(initialContext);
 

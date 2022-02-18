@@ -1,4 +1,4 @@
-import './PipelineList.css';
+import './PipelineList.scss';
 
 import { FC } from 'react';
 import { useDevOpsContext } from '../core/DevOpsContext';
