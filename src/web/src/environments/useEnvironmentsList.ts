@@ -15,7 +15,10 @@ export const useEnvironmentsList = (): useEnvironmentsListResult => {
 
   const fetchEnvironments = useCallback(async (continuationToken: string | false) => {
     const nextToken = continuationToken === false ? null : continuationToken;
-    const envsResult = await devOpsApiClient.getEnvironments(devOpsAccount, nextToken, pageSize);
+    const envsResult = await devOpsApiClient.getEnvironments(devOpsAccount, {
+      continuationToken: nextToken,
+      top: pageSize
+    });
     filterEnvironments(envsResult);
     addEnvironments(envsResult);
     return envsResult.continuationToken;

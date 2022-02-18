@@ -17,7 +17,10 @@ export const usePipelineList = (): usePipelineListResult => {
 
   const getPipelines = useCallback(async (continuationToken: string | false) => {
     const nextToken = continuationToken === false ? null : continuationToken;
-    const pipelinesResponse = await devOpsApiClient.getPipelines(devOpsAccount, nextToken, pageSize);
+    const pipelinesResponse = await devOpsApiClient.getPipelines(devOpsAccount, {
+      continuationToken: nextToken,
+      top: pageSize
+    });
 
     addPipelines({
       ...pipelinesResponse,

@@ -1,5 +1,5 @@
 /* eslint-disable no-loop-func */
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
 import { useProgress } from '../shared/Progress';
@@ -10,6 +10,8 @@ type useDeploymentsListResult = {
   fetchAllDeployments: () => Promise<void>;
 };
 export const useDeploymentsList = (): useDeploymentsListResult => {
+  let [, setController] = useState<AbortController>();
+
   const {
     devOpsAccount,
     environmentsState: { environments },
@@ -17,8 +19,10 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
   } = useDevOpsContext();
   const { trackPendingTasks, resolveProgressTask } = useProgress();
 
-  const getLastDeployment = useCallback(async (environmentId: number) => {
-    const deployment = await devOpsApiClient.getEnvironmentDeployments(devOpsAccount, environmentId, null, 1);
+  const getLastDeployment = useCallback(async (environmentId: number, signal?: AbortSignal) => {
+    const deployment = await devOpsApiClient.getEnvironmentDeployments(devOpsAccount, environmentId, {
+      top: 1
+    }, signal);
     if (deployment.value[0]) {
       const deploy = deployment.value[0];
 
@@ -42,13 +46,18 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
   const fetchAllDeployments = useCallback(async () => {
     const environmentsLoaded = environments.continuationToken === null;
     if (environmentsLoaded) {
+      const abortController = new AbortController();
+      setController((prev) => {
+        prev?.abort();
+        return abortController;
+      });
       clearDeployments();
       trackPendingTasks(true, environments.value.length);
       let batch;
       let batchIndex = 0;
       do {
         batch = paginate(environments.value, batchIndex, batchSize);
-        await Promise.all(batch.map(b => getLastDeployment(b.id).finally(() => {
+        await Promise.all(batch.map(b => getLastDeployment(b.id, abortController.signal).then(() => {
           resolveProgressTask();
         })));
         batchIndex++;
@@ -56,7 +65,14 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
     } else {
       console.log('Skip loading deployments as environments are not synced yet');
     }
-  }, [environments.continuationToken, environments.value, clearDeployments, trackPendingTasks, getLastDeployment, resolveProgressTask]);
+  }, [
+    environments.continuationToken,
+    environments.value,
+    clearDeployments,
+    getLastDeployment,
+    trackPendingTasks,
+    resolveProgressTask,
+    setController]);
 
   return {
     fetchAllDeployments

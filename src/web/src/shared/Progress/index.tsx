@@ -72,7 +72,7 @@ export const useProgress = (): IProgressContext => useContext(ProgressContext);
 export const Progress: FC<{}> = () => {
   const { progress } = useProgress();
   return (
-    <div className="app-progress" hidden={progress === 0 || progress === 1}>
+    <div className="app-progress" hidden={progress === 0 || progress >= 1}>
       <div
         className="app-progress__fill"
         style={({ width: `${Math.floor(progress * 100)}%` })}
