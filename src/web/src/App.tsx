@@ -1,7 +1,6 @@
 import './App.css';
 import { DevOpsContextProvider } from './core/DevOpsContext';
-import { MainActions } from './core/MainActions';
-import { EnvironmentsList } from './environments/EnvironmentsList';
+import { MainActions } from './shared/MainActions';
 import { PipelineList } from './pipelines/PipelineList';
 
 function App() {
@@ -14,7 +13,6 @@ function App() {
         <MainActions />
 
         <PipelineList />
-        <EnvironmentsList />
       </div>
     </DevOpsContextProvider>
   );

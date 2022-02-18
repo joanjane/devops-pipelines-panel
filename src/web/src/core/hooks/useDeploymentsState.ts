@@ -13,6 +13,7 @@ export type Deployment = {
   buildId: number;
   buildName: string;
   startTime: string;
+  pendingDeployments: boolean;
 };
 // Dictionary where key is pipelineId
 export type Deployments = Record<number, Deployment[]>;
@@ -32,7 +33,9 @@ export const useDeploymentsState = (): useDeploymentsStateResult => {
       const envDeploys = prev[deployment.pipelineId] || [];
       return {
         ...prev,
-        [deployment.pipelineId]: [...envDeploys, deployment].sort(sortDeployments)
+        [deployment.pipelineId]: [...envDeploys, deployment].sort(sortDeployments).map((a, i, list) => {
+          return {...a, pendingDeployments: i !== 0 && list[i - 1].buildName !== a.buildName}
+        })
       };
     });
   }, [setDeployments]);

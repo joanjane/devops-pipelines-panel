@@ -1,0 +1,25 @@
+.app-deployment {
+  display: flex;
+  align-items: baseline;
+}
+
+.app-deployment__stage {
+  border: 1px solid rgb(0 0 0 / 50%);
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  margin-right: 1rem;
+}
+
+.app-deployment__stage--pending {
+  background-color: #bcf3ff;
+}
+
+.app-deployment__stage-name {
+  font-weight: bold;
+}
+
+.app-deployment__build-name {
+  display: block;
+  padding: 4px 0;
+}

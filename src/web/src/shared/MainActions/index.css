@@ -1,0 +1,24 @@
+.app-actions {
+  margin-bottom: 1rem;
+}
+
+.app-actions .app-btn {
+  margin-right: 1rem;
+}
+
+.app-btn {
+  all: unset;
+  border: 1px solid black;
+  background: #f6f6f6;
+  color: black;
+  padding: .5rem 1rem;
+}
+
+.app-btn:hover {
+  background: #f6f6f6;
+  cursor: pointer;
+}
+
+.app-btn:focus-visible {
+  outline: 1px solid black;
+}

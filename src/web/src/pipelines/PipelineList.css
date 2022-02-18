@@ -1,0 +1,31 @@
+.app-pipelines__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #f6f6f6;
+  box-shadow: 0 3px 7px -4px #00000052;
+  overflow-x: auto;
+}
+
+.app-pipelines__item:hover {
+  box-shadow: 0 3px 12px -4px #00000052;
+}
+
+.app-pipelines__name {
+  padding-right: 1rem;
+  font-weight: bold;
+}
+
+.app-pipeline-link,
+.app-pipeline-link:hover,
+.app-pipeline-link:visited,
+.app-pipeline-link:active {
+  color: black;
+  text-decoration: none;
+}
+
+.app-pipeline-link:hover {
+  text-decoration: underline;
+}

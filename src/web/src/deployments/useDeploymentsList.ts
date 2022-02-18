@@ -30,7 +30,8 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
         pipelineName: deploy.definition.name,
         buildId: deploy.owner.id,
         buildName: deploy.owner.name,
-        startTime: deploy.startTime
+        startTime: deploy.startTime,
+        pendingDeployments: false
       });
     }
   }, [devOpsAccount, addDeployment]);
