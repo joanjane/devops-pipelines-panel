@@ -1,7 +1,8 @@
 .app-pipelines__item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: start;
+  flex-direction: column;
+
   margin-bottom: 1rem;
   padding: 1rem;
   background: #f6f6f6;
@@ -9,13 +10,29 @@
   overflow-x: auto;
 }
 
+@media screen and (min-width: 768px) {
+  .app-pipelines__item {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
 .app-pipelines__item:hover {
   box-shadow: 0 3px 12px -4px #00000052;
 }
 
 .app-pipelines__name {
-  padding-right: 1rem;
+  padding: 0 0 1rem 0;
   font-weight: bold;
+  max-width: 18.75rem;
+  min-width: 18.75rem;
+  word-break: break-all;
+}
+
+@media screen and (min-width: 768px) {
+  .app-pipelines__name {
+    padding: 0 1rem 0 0;
+  }
 }
 
 .app-pipeline-link,
