@@ -11,7 +11,10 @@ type useEnvironmentsListResult = {
   fetchAllEnvironments: () => Promise<void>;
 };
 export const useEnvironmentsList = (): useEnvironmentsListResult => {
-  const { devOpsAccount, environmentsState: { addEnvironments, clearEnvironments } } = useDevOpsContext();
+  const {
+    settings: { devOpsAccount },
+    environmentsState: { addEnvironments, clearEnvironments }
+  } = useDevOpsContext();
 
   const fetchEnvironments = useCallback(async (continuationToken: string | false) => {
     const nextToken = continuationToken === false ? null : continuationToken;

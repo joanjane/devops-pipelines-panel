@@ -1,0 +1,74 @@
+.app-floating-menu {
+  position: fixed;
+  background-color: transparent;
+  transition: background-color .25s ease-in-out;
+
+  .app-floating-menu__content {
+    display: none;
+    margin: 5rem 2rem 1rem;
+  }
+
+  &--closed {
+    top: 25px;
+    right: 25px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &--opened {
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    right: 0;
+    background-color: #f6f6f6;
+
+    .app-floating-menu__content {
+      display: block;
+    }
+
+    .app-action-btn {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+    }
+  }
+}
+
+.app-action-btn {
+  all: unset;
+  cursor: pointer;
+
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  background-color: #2b2bff;
+  box-shadow: 0px 2px 20px -8px #000000a3;
+  transition: all .25s ease-in-out;
+
+  &:hover {
+    background-color: #6969ff;
+    box-shadow: 0px 4px 20px -4px #000000a3;
+  }
+
+  &:focus {
+    background-color: blue;
+  }
+
+  &:focus-visible {
+    outline: 2px solid black;
+  }
+
+  &__cross {
+    font-size: 2rem;
+  }
+
+  &__hamburger {
+    font-size: 1.5rem;
+    transform: translateY(-5%);
+    margin: auto;
+  }
+}

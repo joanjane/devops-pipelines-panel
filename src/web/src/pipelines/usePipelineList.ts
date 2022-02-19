@@ -3,7 +3,9 @@ import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
 import { Pipeline } from './usePipelinesState';
 
-const foldersWhitelist = (process.env.REACT_APP_PIPELINES_FOLDERS_WHITELIST || '').split(',').filter(s => s !== '');
+const foldersWhitelist = (process.env.REACT_APP_PIPELINES_FOLDERS_WHITELIST || '')
+  .split(',')
+  .filter(s => s !== '');
 
 const pageSize = 50;
 type usePipelineListResult = {
@@ -11,7 +13,7 @@ type usePipelineListResult = {
 };
 export const usePipelineList = (): usePipelineListResult => {
   const {
-    devOpsAccount,
+    settings: { devOpsAccount },
     pipelinesState: { addPipelines, clearPipelines }
   } = useDevOpsContext();
 

@@ -13,7 +13,7 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
   let [, setController] = useState<AbortController>();
 
   const {
-    devOpsAccount,
+    settings: { devOpsAccount },
     environmentsState: { environments },
     deploymentsState: { addDeployment, clearDeployments }
   } = useDevOpsContext();

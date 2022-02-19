@@ -1,5 +1,4 @@
-import { FC, createContext, useContext, useState } from 'react';
-import { DevOpsAccount } from '../api/types';
+import { FC, createContext, useContext } from 'react';
 import {
   useDeploymentsState,
   useDeploymentsStateResult,
@@ -15,9 +14,10 @@ import {
   usePipelinesStateResult,
   initialState as pipelinesInitialState
 } from '../pipelines/usePipelinesState';
+import { useSettingsState, useSettingsStateResult } from './Settings/useSettingsState';
 
 interface IDevOpsContext {
-  devOpsAccount: DevOpsAccount;
+  settings: useSettingsStateResult;
   environmentsState: useEnvironmentsStateResult;
   deploymentsState: useDeploymentsStateResult;
   pipelinesState: usePipelinesStateResult;
@@ -26,7 +26,10 @@ interface IDevOpsContext {
 const stub = () => { };
 
 const initialContext: IDevOpsContext = {
-  devOpsAccount: null,
+  settings: {
+    devOpsAccount: null,
+    setDevOpsAccount: stub
+  },
   pipelinesState: {
     pipelines: pipelinesInitialState,
     addPipelines: stub,
@@ -46,11 +49,7 @@ const initialContext: IDevOpsContext = {
 const DevOpsContext = createContext<IDevOpsContext>(initialContext);
 
 export const DevOpsContextProvider: FC = ({ children }) => {
-  const [devOpsAccount] = useState<DevOpsAccount>({
-    organization: process.env.REACT_APP_DEVOPS_ORG,
-    project: process.env.REACT_APP_DEVOPS_PROJECT,
-    pat: process.env.REACT_APP_DEVOPS_PAT
-  });
+  const settings = useSettingsState();
 
   const environmentsState = useEnvironmentsState();
   const deploymentsState = useDeploymentsState();
@@ -58,7 +57,7 @@ export const DevOpsContextProvider: FC = ({ children }) => {
 
   return (
     <DevOpsContext.Provider value={{
-      devOpsAccount,
+      settings,
       environmentsState,
       deploymentsState,
       pipelinesState
