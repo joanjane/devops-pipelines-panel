@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "azure-devops-pipelines-panel",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -20,11 +20,18 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
+  "devDependencies": {
+    "@types/uuid": "^8.3.4",
+    "gh-pages": "^3.2.3",
+    "sass": "^1.49.8"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build -b gh-pages"
   },
   "eslintConfig": {
     "extends": [
@@ -44,8 +51,12 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@types/uuid": "^8.3.4",
-    "sass": "^1.49.8"
-  }
+  "license": "MIT",
+  "author": {
+    "name": "Joan Jané"
+  },
+  "repository": {
+    "url": "https://github.com/joanjane/devops-pipelines-panel"
+  },
+  "homepage": "https://joanjane.github.io/devops-pipelines-panel"
 }
