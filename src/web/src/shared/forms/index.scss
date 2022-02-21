@@ -1,0 +1,24 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif, "Helvetica Neue", "Lucida Grande", Arial;
+  padding-bottom: 1rem;
+
+  &__label {
+    font-size: 0.875rem;
+    font-stretch: condensed;
+    font-weight: bold;
+    padding-bottom: 0.5rem;
+  }
+
+  &__control {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d3cfcf;
+    border-radius: 3px;
+  }
+
+  &__feedback {
+    color: #b93131;
+    padding: .25rem 0;
+  }
+}

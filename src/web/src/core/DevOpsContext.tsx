@@ -14,7 +14,12 @@ import {
   usePipelinesStateResult,
   initialState as pipelinesInitialState
 } from '../pipelines/usePipelinesState';
-import { useSettingsState, useSettingsStateResult } from './Settings/useSettingsState';
+import {
+  useSettingsState,
+  useSettingsStateResult,
+  devOpsAccountInitialState,
+  pipelinesFilterInitialState
+} from './settings/useSettingsState';
 
 interface IDevOpsContext {
   settings: useSettingsStateResult;
@@ -27,8 +32,10 @@ const stub = () => { };
 
 const initialContext: IDevOpsContext = {
   settings: {
-    devOpsAccount: null,
-    setDevOpsAccount: stub
+    devOpsAccount: devOpsAccountInitialState,
+    setDevOpsAccount: stub,
+    pipelinesFilter: pipelinesFilterInitialState,
+    setPipelinesFilter: stub
   },
   pipelinesState: {
     pipelines: pipelinesInitialState,
@@ -50,7 +57,6 @@ const DevOpsContext = createContext<IDevOpsContext>(initialContext);
 
 export const DevOpsContextProvider: FC = ({ children }) => {
   const settings = useSettingsState();
-
   const environmentsState = useEnvironmentsState();
   const deploymentsState = useDeploymentsState();
   const pipelinesState = usePipelinesState();

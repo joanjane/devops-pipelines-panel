@@ -8,7 +8,7 @@ export type Pipeline = {
   folder: string;
 };
 
-export const initialState: DevOpsPagedList<Pipeline> = { value: [], count: 0, continuationToken: false};
+export const initialState: DevOpsPagedList<Pipeline> = { value: [], count: 0, continuationToken: false };
 export type usePipelinesStateResult = {
   pipelines: DevOpsPagedList<Pipeline>;
   addPipelines: (deployment: DevOpsPagedList<Pipeline>) => void;

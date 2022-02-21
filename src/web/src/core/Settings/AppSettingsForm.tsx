@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Shape } from '../yup';
-import { InputControl } from '../../shared/forms';
+import { FormTextInputControl } from '../../shared/forms';
 import { useSettingsActions } from './useSettingsActions';
 import { useDevOpsContext } from '../DevOpsContext';
 
@@ -44,9 +44,9 @@ export const AppSettingsForm: FC<{}> = () => {
   return <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
     <h2>Settings</h2>
     <section>
-      <InputControl control={control} name="organization" type="text" label="Azure DevOps Organization" />
-      <InputControl control={control} name="project" type="text" label="Project Name / Project ID" />
-      <InputControl control={control} name="pat" type="password" label="Personal Access Token" />
+      <FormTextInputControl control={control} name="organization" type="text" label="Azure DevOps Organization" />
+      <FormTextInputControl control={control} name="project" type="text" label="Project Name / Project ID" />
+      <FormTextInputControl control={control} name="pat" type="password" label="Personal Access Token" />
     </section>
 
     <button type="submit" className="app-btn">Save</button>

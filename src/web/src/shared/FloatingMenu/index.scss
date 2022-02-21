@@ -5,7 +5,9 @@
 
   .app-floating-menu__content {
     display: none;
-    margin: 5rem 2rem 1rem;
+    padding: 5rem 2rem 1rem;
+    margin: 0 auto;
+    max-width: 768px;
   }
 
   &--closed {

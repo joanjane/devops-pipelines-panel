@@ -1,11 +1,6 @@
 import { useCallback } from 'react';
 import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
-import { Pipeline } from './usePipelinesState';
-
-const foldersWhitelist = (process.env.REACT_APP_PIPELINES_FOLDERS_WHITELIST || '')
-  .split(',')
-  .filter(s => s !== '');
 
 const pageSize = 50;
 type usePipelineListResult = {
@@ -26,12 +21,12 @@ export const usePipelineList = (): usePipelineListResult => {
 
     addPipelines({
       ...pipelinesResponse,
-      value: filterPipelines(pipelinesResponse.value.map(p => ({
+      value: pipelinesResponse.value.map(p => ({
         id: p.id,
         name: p.name,
         folder: p.folder,
         pipelineUrl: p._links.web.href,
-      })))
+      }))
     });
     return pipelinesResponse.continuationToken;
   }, [devOpsAccount, addPipelines]);
@@ -48,10 +43,3 @@ export const usePipelineList = (): usePipelineListResult => {
     fetchAllPipelines
   };
 };
-
-
-function filterPipelines(pipelines: Pipeline[]): Pipeline[] {
-  if (foldersWhitelist.length > 0) {
-    return pipelines.filter(e => foldersWhitelist.includes(e.folder));
-  }
-}

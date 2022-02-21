@@ -1,7 +1,14 @@
 .app-actions {
   margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-end;
 
   & .app-btn {
     margin-right: 1rem;
+  }
+
+  & .form-field {
+    padding-bottom: 0;
+    justify-self: flex-end;
   }
 }

@@ -20,9 +20,8 @@
     }
   }
 
-  &__name {
+  &__details {
     padding: 0 0 1rem 0;
-    font-weight: bold;
     max-width: 18.75rem;
     min-width: 18.75rem;
     word-break: break-all;
@@ -30,6 +29,16 @@
     @media screen and (min-width: 768px) {
       padding: 0 1rem 0 0;
     }
+  }
+
+  &__name {
+    font-weight: bold;
+    word-break: break-all;
+  }
+
+  &__folder {
+    display: block;
+    font-style: italic;
   }
 }
 
