@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/devops-pipelines-panel/static/css/main.97f74fdc.css",
+    "main.js": "/devops-pipelines-panel/static/js/main.6b3823d8.js",
+    "static/js/787.225e15d3.chunk.js": "/devops-pipelines-panel/static/js/787.225e15d3.chunk.js",
+    "index.html": "/devops-pipelines-panel/index.html",
+    "main.97f74fdc.css.map": "/devops-pipelines-panel/static/css/main.97f74fdc.css.map",
+    "main.6b3823d8.js.map": "/devops-pipelines-panel/static/js/main.6b3823d8.js.map",
+    "787.225e15d3.chunk.js.map": "/devops-pipelines-panel/static/js/787.225e15d3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.97f74fdc.css",
+    "static/js/main.6b3823d8.js"
+  ]
+}
