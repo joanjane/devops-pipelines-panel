@@ -14,17 +14,20 @@ export const MainActions: FC<{}> = () => {
   const { settings } = useDevOpsContext();
   return (
     <div className="app-actions">
-      <button className="app-btn" type="button" onClick={() => {
-        fetchAllPipelines();
-        fetchAllEnvironments();
-      }}>🔄 Sync</button>
+      <div>
+        <button className="app-btn" type="button" onClick={() => {
+          fetchAllPipelines();
+          fetchAllEnvironments();
+        }}>🔄 Sync</button>
 
-      <button className="app-btn" type="button" onClick={() => fetchAllDeployments()}>Get deployments</button>
+        <button className="app-btn" type="button" onClick={() => fetchAllDeployments()}>Get deployments</button>
+      </div>
 
       <TextInputControl
         type="search"
         placeholder="\MyFolder"
         label="📂 Pipeline folder"
+        autoComplete="on"
         value={settings.pipelinesFilter.folder}
         onChange={(e) => settings.setPipelinesFilter(f => ({ ...f, folder: e.target.value }))}
       />

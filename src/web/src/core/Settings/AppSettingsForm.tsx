@@ -1,3 +1,5 @@
+import './AppSettingsForm.scss';
+
 import { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -41,15 +43,16 @@ export const AppSettingsForm: FC<{}> = () => {
     clearDevOpsAccount();
   }
 
-  return <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+  return <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="app-settings-form">
     <h2>Settings</h2>
     <section>
       <FormTextInputControl control={control} name="organization" type="text" label="Azure DevOps Organization" />
       <FormTextInputControl control={control} name="project" type="text" label="Project Name / Project ID" />
       <FormTextInputControl control={control} name="pat" type="password" label="Personal Access Token" />
     </section>
-
-    <button type="submit" className="app-btn">Save</button>
-    <button type="reset" className="app-btn" onClick={resetData}>Clear data</button>
+    <div className="app-settings-form__actions">
+      <button type="submit" className="app-btn">Save</button>
+      <button type="reset" className="app-btn" onClick={resetData}>Clear data</button>
+    </div>
   </form>;
 }

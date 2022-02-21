@@ -32,7 +32,7 @@ export const useSettingsActions = (): useSettingsActionsResult => {
 
   const clearDevOpsAccount = useCallback(() => {
     setDevOpsAccount(initialState);
-    localStorage.removeItem(localStorageAccountKey);
+    localStorage.clear();
   }, [setDevOpsAccount]);
 
   return {
