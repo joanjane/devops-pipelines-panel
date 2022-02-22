@@ -37,7 +37,10 @@ export const useDeploymentsState = (): useDeploymentsStateResult => {
           .map((env, i, list) => {
             return {
               ...env,
-              pendingDeployments: i !== 0 && list.some(prevEnv => prevEnv.buildName !== env.buildName)
+              pendingDeployments: i !== 0 &&
+                list
+                  .filter((_, stageIndex) => stageIndex < i)
+                  .some(prevEnv => prevEnv.buildName !== env.buildName)
             };
           })
       };
