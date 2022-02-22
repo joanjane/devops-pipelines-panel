@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DevOpsEnvironmentList } from '../api/types';
 
+const localStorageEnvironmentsKey = 'environments.list';
 export const initialState: DevOpsEnvironmentList = { count: 0, value: [], continuationToken: false };
 export type useEnvironmentsStateResult = {
   environments: DevOpsEnvironmentList;
@@ -9,6 +10,17 @@ export type useEnvironmentsStateResult = {
 }
 export const useEnvironmentsState = (): useEnvironmentsStateResult => {
   const [environments, setEnvironments] = useState<DevOpsEnvironmentList>(initialState);
+
+  useEffect(() => {
+    const envs = localStorage.getItem(localStorageEnvironmentsKey);
+    if (envs) {
+      setEnvironments(JSON.parse(envs));
+    }
+  }, [setEnvironments]);
+
+  useEffect(() => {
+    localStorage.setItem(localStorageEnvironmentsKey, JSON.stringify(environments));
+  }, [environments]);
 
   const addEnvironments = useCallback(async (pipelines: DevOpsEnvironmentList) => {
     setEnvironments(prev => {
@@ -20,6 +32,7 @@ export const useEnvironmentsState = (): useEnvironmentsStateResult => {
   }, [setEnvironments]);
 
   const clearEnvironments = useCallback(() => {
+    localStorage.removeItem(localStorageEnvironmentsKey);
     setEnvironments(initialState);
   }, [setEnvironments]);
 
