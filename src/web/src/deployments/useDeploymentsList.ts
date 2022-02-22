@@ -1,5 +1,5 @@
 /* eslint-disable no-loop-func */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { devOpsApiClient } from '../api/DevOpsApiClient';
 import { useDevOpsContext } from '../core/DevOpsContext';
 import { useProgress } from '../shared/Progress';
@@ -14,10 +14,12 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
 
   const {
     settings: { devOpsAccount },
+    pipelinesState: { pipelines },
     environmentsState: { environments },
     deploymentsState: { addDeployment, clearDeployments }
   } = useDevOpsContext();
   const { trackPendingTasks, resolveProgressTask } = useProgress();
+  const [loaded, setLoaded] = useState(false);
 
   const getLastDeployment = useCallback(async (environmentId: number, signal?: AbortSignal) => {
     const deployment = await devOpsApiClient.getEnvironmentDeployments(devOpsAccount, environmentId, {
@@ -73,6 +75,13 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
     trackPendingTasks,
     resolveProgressTask,
     setController]);
+
+  useEffect(() => {
+    if (!loaded && pipelines.continuationToken == null && environments.continuationToken == null) {
+      setLoaded(true);
+      fetchAllDeployments();
+    }
+  }, [environments, pipelines, loaded, fetchAllDeployments]);
 
   return {
     fetchAllDeployments
