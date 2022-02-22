@@ -8,6 +8,7 @@ const batchSize = 5;
 
 type useDeploymentsListResult = {
   fetchAllDeployments: () => Promise<void>;
+  enabled: boolean;
 };
 export const useDeploymentsList = (): useDeploymentsListResult => {
   let [, setController] = useState<AbortController>();
@@ -84,7 +85,8 @@ export const useDeploymentsList = (): useDeploymentsListResult => {
   }, [environments, pipelines, loaded, fetchAllDeployments]);
 
   return {
-    fetchAllDeployments
+    fetchAllDeployments,
+    enabled: pipelines.continuationToken == null && environments.continuationToken == null
   };
 };
 

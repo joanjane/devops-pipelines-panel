@@ -10,7 +10,7 @@ import { TextInputControl } from '../forms';
 export const MainActions: FC<{}> = () => {
   const { fetchAllPipelines } = usePipelineList();
   const { fetchAllEnvironments } = useEnvironmentsList();
-  const { fetchAllDeployments } = useDeploymentsList();
+  const { fetchAllDeployments, enabled: fetchDeploymentsEnabled } = useDeploymentsList();
   const { settings } = useDevOpsContext();
   return (
     <div className="app-actions">
@@ -20,7 +20,9 @@ export const MainActions: FC<{}> = () => {
           fetchAllEnvironments();
         }}>🔄 Sync</button>
 
-        <button className="app-btn" type="button" onClick={() => fetchAllDeployments()}>Get deployments</button>
+        <button className="app-btn" type="button"
+          onClick={() => fetchAllDeployments()}
+          disabled={!fetchDeploymentsEnabled}>Get deployments</button>
       </div>
 
       <TextInputControl
