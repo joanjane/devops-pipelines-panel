@@ -29,7 +29,9 @@ export const useSettingsState = (): useSettingsStateResult => {
 
   useEffect(() => {
     const filter = localStorage.getItem(localStorageFiltersKey);
-    setPipelinesFilter(JSON.parse(filter));
+    if (filter) {
+      setPipelinesFilter(JSON.parse(filter));
+    }
   }, [setPipelinesFilter]);
 
   useEffect(() => {
