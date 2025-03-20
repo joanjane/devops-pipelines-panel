@@ -234,3 +234,6 @@ _Pvt_Extensions
 .fake/
 
 .env
+
+# MD generated with compare-devops-variables script
+variables-comparison*.md
