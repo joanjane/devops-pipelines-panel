@@ -102,6 +102,11 @@ const getVariableComparisonData = (libraries, librariesToCompare) => {
         const isSecret = variable?.isSecret ?? false;
         return isSecret ? `***** (secret)` : `${variable?.value || 'N/A'}`;
       }),
+      equalValues: !filteredLibraries.some(
+        (library) =>
+          library.variables[key]?.value !==
+          filteredLibraries[0].variables[key]?.value
+      ),
     };
   });
   return { headerValues, gridValues };
@@ -113,13 +118,19 @@ const renderMarkdownFile = async (headerValues, gridValues) => {
   let markdownContent = '|' + headerValues.join('|') + '|\n';
   markdownContent += '|' + headerValues.map(() => '---').join('|') + '|\n';
   gridValues.forEach((row) => {
-    markdownContent += '|' + [row.key, ...row.values].join('|') + '|\n';
+    markdownContent +=
+      '|' +
+      [
+        `${!row.equalValues ? '**' + row.key + '**' : row.key}`,
+        ...row.values,
+      ].join('|') +
+      '|\n';
   });
 
   // Write the content to a file
   await fs.writeFile(outputFilePath, markdownContent, 'utf8');
   console.log(`Markdown table written to ${outputFilePath}`);
-}
+};
 
 const configuration = await buildConfig();
 console.log('Configuration:', configuration);
